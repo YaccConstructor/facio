@@ -30,7 +30,7 @@
     <WarningsAsErrors>25</WarningsAsErrors>
     <StartArguments>--unicode -o "TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "TestCases\fsharp\fsharp.fsl"</StartArguments>
     <OtherFlags>--stackReserveSize:16777216 --warnon:1182</OtherFlags>
-    <StartWorkingDirectory>C:\Users\Jack\Documents\Code Libraries\facio\</StartWorkingDirectory>
+    <StartWorkingDirectory>C:\Users\Ekaterina\YaccConstructor\facio\</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -127,6 +127,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(NuGetTargets)')" Text="$(ErrorText)" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	     Other similar extension points exist, see Microsoft.Common.targets.
 	<Target Name="BeforeBuild">

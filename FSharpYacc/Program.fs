@@ -85,7 +85,7 @@ module Program =
 
 
     //
-    let private loadBackends () =
+    let loadBackends () = //let private loadBackends () =
         //
         use catalog = new AssemblyCatalog (typeof<Backends>.Assembly)
 
