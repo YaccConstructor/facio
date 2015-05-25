@@ -458,7 +458,7 @@ module private FsYacc =
 
     /// Emits F# code which creates the parser tables into an IndentedTextWriter.
     let private parserTables (processedSpec : ProcessedSpecification<NonterminalIdentifier, TerminalIdentifier>,
-                              parserTable : Lr0ParserTable<NonterminalIdentifier, TerminalIdentifier>,
+                              parserTable, //Lr1ParserTable<NonterminalIdentifier, TerminalIdentifier>,
                               productionIndices : Map<_,_>) (writer : IndentedTextWriter) =
         // _fsyacc_gotos
         // _fsyacc_sparseGotoTableRowOffsets
@@ -1002,7 +1002,7 @@ module private FsYacc =
 
     /// Emits code for an fsyacc-compatible parser into an IndentedTextWriter.
     let emit (processedSpec : ProcessedSpecification<NonterminalIdentifier, TerminalIdentifier>,
-                parserTable : Lr0ParserTable<NonterminalIdentifier, TerminalIdentifier>)
+                parserTable : LrParserTable<AugmentedNonterminal<NonterminalIdentifier>, AugmentedTerminal<TerminalIdentifier>, _>)
              (options : FsyaccBackendOptions, writer : IndentedTextWriter) : unit =
         (* Emit the module declaration. *)
 

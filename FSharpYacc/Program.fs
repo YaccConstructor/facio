@@ -166,14 +166,15 @@ module Program =
         | [] ->
             // Compile the processed specification.
             match Compiler.compile (processedSpecification, options) with
-            | Choice2Of2 errorMessages ->
+            | Choice2Of3 errorMessages ->
                 // Write the error messages to the console.
-                errorMessages
-                |> List.iter logger.Error
+                failwith "%A" errorMessages
+                //errorMessages
+                //|> List.iter logger.Error
 
                 1   // Exit code: Error
 
-            | Choice1Of2 parserTable ->
+            | Choice1Of3 parserTable -> //lr0 table
                 // TEMP : Invoke the fsyacc-compatible backend.
                 // Eventually we'll implement a way for the user to select the backend(s) to use.
                 backends.FsyaccBackend.Invoke (
@@ -182,7 +183,15 @@ module Program =
                     options)
 
                 0   // Exit code: Success
+            | Choice3Of3 parserTable -> //lr1 table
+                // TEMP : Invoke the fsyacc-compatible backend.
+                // Eventually we'll implement a way for the user to select the backend(s) to use.
+                backends.FsyaccBackend.Invoke (
+                    processedSpecification,
+                    parserTable,
+                    options)
 
+                0   // Exit code: Success
     (* TEMP :   These defaults will be moved into the 'fsyacc'-compatible backend once we implement
                 a way for the backends to "export" a list of the arguments/options they accept. *)
     //
@@ -260,7 +269,7 @@ module Program =
         // Create a CompilationOptions record from the parsed arguments
         // and call the 'invoke' function with it.
         let compilationOptions = {
-            ParserType = ParserType.Lalr1;
+            ParserType = ParserType.LALR1;
             // TEMP
             FsyaccBackendOptions = Some {
                 OutputPath = Option.get !outputPath;

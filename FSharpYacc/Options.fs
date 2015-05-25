@@ -32,7 +32,7 @@ type FsyaccBackendOptions = {
     /// The namespace containing the lexer interpreter.
     /// If not set, a default value is used instead.
     LexerInterpreterNamespace : string option;
-    /// The namespace containing the lexer interpreter.
+    /// The namespace containing the parser interpreter.
     /// If not set, a default value is used instead.
     ParserInterpreterNamespace : string option;
     /// When generating the parser code, F# 'open' declarations are generated
@@ -44,15 +44,12 @@ type FsyaccBackendOptions = {
 
 (* END: Backend-specific options *)
 
-
 //
-type ParserType =
-    //
-    | Lalr1
-    | Lr0
-    | Lr1
-    | Slr1
-    | Lelr
+type ParserType = 
+    | LR0
+    | LR1
+    | SLR1
+    | LALR1
 
 /// Parser compilation options.
 type CompilationOptions = {

@@ -27,7 +27,7 @@ type IBackend =
     /// <param name="options">Options which control the behavior of the backend.</param>
     abstract Invoke :
         processedSpec : ProcessedSpecification<NonterminalIdentifier, TerminalIdentifier>
-        * parserTable : Lr0ParserTable<NonterminalIdentifier, TerminalIdentifier>
+        * parserTable : LrParserTable<Graham.Grammar.AugmentedNonterminal<NonterminalIdentifier>, Graham.Grammar.AugmentedTerminal<TerminalIdentifier>, _> // : Lr1ParserTable<NonterminalIdentifier, TerminalIdentifier>
         * options : CompilationOptions
         // TODO : Add parameter for logging interface?
         -> unit

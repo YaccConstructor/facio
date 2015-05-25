@@ -28,7 +28,6 @@ open Graham.Grammar
 open Graham.LR
 open FSharpYacc.Ast
 
-
 //
 type ValidationMessages = {
     //
@@ -590,7 +589,7 @@ let private precedenceSettings (processedSpec : ProcessedSpecification<Nontermin
 
 /// Compiles a parser specification into a deterministic pushdown automaton (DPDA),
 /// then invokes a specified backend to generate code implementing the parser automaton.
-let compile (processedSpec : ProcessedSpecification<_,_>, options : CompilationOptions) : Choice<_,_> =
+let compile (processedSpec : ProcessedSpecification<_,_>, options : CompilationOptions) : Choice<_,_,_> =
     tprintfn "Compiling the parser specification..."
 
     /// The grammar created from the parser specification.
@@ -621,73 +620,101 @@ let compile (processedSpec : ProcessedSpecification<_,_>, options : CompilationO
     // from the precompilation result.
     let precedenceSettings =
         precedenceSettings (processedSpec, productionRuleIds)
-
-    (*  Create the LR(0) automaton from the grammar; report the number of states and
-        the number of S/R and R/R conflicts. If there are any conflicts, apply the
-        precedence table to the constructed parser table to (possibly) resolve some
-        of them. At this point, if there aren't any remaining conflicts, report that
-        the grammar is LR(0) and return. *)
     
     /// The LR(0) parser table.
-    let lr0Table =
+    let getLr0Table () =
         tprintf "  Creating the LR(0) parser table..."
         let lr0Table = Lr0.createTable grammar
+        let stateQuantity = TagBimap.count lr0Table.ParserStates 
+        printfn "State quantity for LR(0) table: %d" stateQuantity
+        // Return the compiled parser table.
+        tprintfn "Finished compiling the parser specification."
         tprintfn "done."
         lr0Table
 
-    (*  Upgrade the LR(0) automaton to SLR(1); report the remaining number of S/R and
-        R/R conflicts. If there aren't any remaining conflicts, report that the grammar
-        is SLR(1) and return. *)
-    //
-    let slr1Table =
-        tprintf "  Upgrading the LR(0) parser table to SLR(1)..."
-        let slr1Table = Slr1.upgrade (grammar, lr0Table, productionRuleIds)
-        tprintfn "done."
-        slr1Table
-
-    (*  Upgrade the LR(0)/SLR(1) automaton to LALR(1); report the remaining number of
-        S/R and R/R conflicts. If there aren't any remaining conflicts, report that the
-        grammar is LALR(1) and return. *)
-    //
-    let lalrLookaheadSets =
-        tprintf "  Computing LALR(1) look-ahead sets..."
-        let lalrLookaheadSets = Lalr1.lookaheadSets (grammar, slr1Table)
-        tprintfn "done."
-        lalrLookaheadSets
-
-    // If we detected that the grammar is not LR(k), stop and return an error message.
-    match lalrLookaheadSets with
-    | Choice2Of2 errorMessage ->
-        Choice2Of2 [errorMessage]
-    | Choice1Of2 lookaheadSets ->
-        //
-        let lalr1Table =
-            tprintf "  Upgrading the SLR(1) parser table to LALR(1)..."
-            let lalr1Table = Lalr1.upgrade (grammar, slr1Table, productionRuleIds, lookaheadSets)
-            tprintfn "done."
-            lalr1Table
-
-        (* Apply precedence settings to resolve as many conflicts as possible. *)
-        /// The LALR(1) parser table, after applying precedence settings.
-        let lalr1Table =
-            tprintf "  Applying precedence declarations..."
-            // Apply precedences to resolve conflicts.
-            let lalr1Table = Lr0.applyPrecedence (lalr1Table, precedenceSettings)
-            tprintfn "done."
-            lalr1Table
-            
-        (*  If we reach this point, the grammar is not LALR(1), but we can still create a
-            parser by taking certain actions to resolve any remaining conflicts.
-            Emit a _warning_ message for each of these conflicts, specifying the action
-            we've taken to resolve it. *)
-        //
-        let lalr1Table =
-            tprintf "  Using default strategy to solve any remaining conflicts..."
-            let lalr1Table = Lr0.resolveConflicts lalr1Table
-            tprintfn "done."
-            lalr1Table
-
+    /// The LR(1) parser table.
+    let getLr1Table () =
+        tprintf "  Creating the LR(1) parser table..."
+        let lr1Table = Lr1.createTable grammar
+        let stateQuantity = TagBimap.count lr1Table.ParserStates 
+        printfn "State quantity for LR(1) table: %d" stateQuantity
         // Return the compiled parser table.
         tprintfn "Finished compiling the parser specification."
-        Choice1Of2 lalr1Table
+        tprintfn "done."
+        lr1Table    
 
+    (*  Upgrade the LR(0) automaton to SLR(1); report the remaining number of S/R and
+        R/R conflicts. If there aren't any remaining conflicts, report that the grammar
+        is SLR(1) and return. *)            
+    let getSlr1Table (lr0Table) =
+        tprintf "  Upgrading the LR(0) parser table to SLR(1)..."
+        let slr1Table = Slr1.upgrade (grammar, lr0Table, productionRuleIds)
+        let stateQuantity = TagBimap.count slr1Table.ParserStates 
+        printfn "State quantity for SLR(1) table: %d" stateQuantity
+        tprintfn "done."
+        // Return the compiled parser table.
+        tprintfn "Finished compiling the parser specification."
+        slr1Table
+    
+    let getLalr1Table (lr0Table) =
+        let slr1Table = getSlr1Table lr0Table
+       (*  Upgrade the LR(0)/SLR(1) automaton to LALR(1); report the remaining number of
+            S/R and R/R conflicts. If there aren't any remaining conflicts, report that the
+            grammar is LALR(1) and return. *)
+        //
+        let lalrLookaheadSets =
+            tprintf "  Computing LALR(1) look-ahead sets..."
+            let lalrLookaheadSets = Lalr1.lookaheadSets (grammar, slr1Table)
+            tprintfn "done."
+            lalrLookaheadSets
+
+        // If we detected that the grammar is not LR(k), stop and return an error message.
+        match lalrLookaheadSets with
+        | Choice2Of2 errorMessage ->
+            Choice2Of3 [errorMessage]
+        | Choice1Of2 lookaheadSets ->
+            //
+            let lalr1Table =
+                tprintf "  Upgrading the SLR(1) parser table to LALR(1)..."
+                let lalr1Table = Lalr1.upgrade (grammar, slr1Table, productionRuleIds, lookaheadSets)
+                tprintfn "done."
+                lalr1Table
+
+            (* Apply precedence settings to resolve as many conflicts as possible. *)
+            /// The LALR(1) parser table, after applying precedence settings.
+            let lalr1Table =
+                tprintf "  Applying precedence declarations..."
+                // Apply precedences to resolve conflicts.
+                let lalr1Table = Lr0.applyPrecedence (lalr1Table, precedenceSettings)
+                tprintfn "done."
+                lalr1Table
+            
+            (*  If we reach this point, the grammar is not LALR(1), but we can still create a
+                parser by taking certain actions to resolve any remaining conflicts.
+                Emit a _warning_ message for each of these conflicts, specifying the action
+                we've taken to resolve it. *)
+            //
+            let lalr1Table =
+                tprintf "  Using default strategy to solve any remaining conflicts..."
+                let lalr1Table = Lr0.resolveConflicts lalr1Table
+                // Return the compiled parser table.
+                tprintfn "Finished compiling the parser specification."
+                let stateQuantity = TagBimap.count lr0Table.ParserStates 
+                printfn "State quantity for LALR(1) table: %d" stateQuantity
+                tprintfn "done."
+                lalr1Table
+            Choice1Of3 lalr1Table
+
+    let createTable = 
+        match options.ParserType with
+        | LR0 -> Choice1Of3 (getLr0Table())
+        | LR1 -> Choice3Of3 (getLr1Table())       
+        | SLR1 -> Choice1Of3 (getSlr1Table(getLr0Table()))
+        | LALR1 ->
+            let lalrRes = getLalr1Table(getLr0Table())
+            match lalrRes with
+                | Choice2Of3 errorMessages ->
+                    failwith "%s" errorMessages
+                | Choice1Of3 lalr1Table -> Choice1Of3 lalr1Table
+                | Choice3Of3 _ -> failwith "Error in getLalr1Table"
+    createTable
