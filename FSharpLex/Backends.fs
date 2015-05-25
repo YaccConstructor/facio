@@ -38,16 +38,16 @@ type Backends () =
                 backend
         and set value =
             fslexBackend <- Some value
-
-//    /// The graph-based backend.
-//    [<Import>]
-//    member __.GraphBackend
-//        with get () : IBackend =
-//            match graphBackend with
-//            | None ->
-//                invalidOp "The graph backend has not been set."
-//            | Some backend ->
-//                backend
-//        and set value =
-//            graphBackend <- Some value
-
+            
+    /// The graph-based backend.
+    (*[<Import>]
+    member __.GraphBackend
+        with get () : IBackend =
+            match graphBackend with
+            | None ->
+                invalidOp "The graph backend has not been set."
+            | Some backend ->
+                backend
+        and set value =
+            graphBackend <- Some value
+*)

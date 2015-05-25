@@ -1,0 +1,17 @@
+%{
+open Ast
+%}
+
+%start start
+%token <System.Int32> INT
+%token WHILE DO PRINT
+%type < Ast.Prog > start
+
+%%
+
+start: Stmt { [$1] }
+
+Expr: INT {  Int($1)  }
+
+Stmt: WHILE Expr DO Stmt { While($2,$4) }
+    | PRINT Expr { Print($2) }

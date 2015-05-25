@@ -28,8 +28,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>25</WarningsAsErrors>
-    <StartArguments>--internal --module "Parser" -o "fsharp-parser.fs" "C:\Users\Ekaterina\fsharp-tools\TestCases\fsharp\absil.fsy"</StartArguments>
+    <StartArguments>--internal --module "Parser" -o "TestCases\fsharp\example-parser.fs" "TestCases\fsharp\example.fsy"</StartArguments>
     <OtherFlags>--stackReserveSize:16777216 --warnon:1182</OtherFlags>
+    <StartWorkingDirectory>C:\Users\Ekaterina\facio\</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

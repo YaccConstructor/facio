@@ -28,9 +28,10 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>25</WarningsAsErrors>
-    <StartArguments>--unicode -o "TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "TestCases\fsharp\fsharp.fsl"</StartArguments>
+    <StartArguments>--unicode -o "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp.fsl"</StartArguments>
     <OtherFlags>--stackReserveSize:16777216 --warnon:1182</OtherFlags>
     <StartWorkingDirectory>C:\Users\Ekaterina\YaccConstructor\facio\</StartWorkingDirectory>
+    </StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,8 +44,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>25</WarningsAsErrors>
-    <StartArguments>--unicode -o "TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "TestCases\fsharp\fsharp.fsl"</StartArguments>
-    <StartWorkingDirectory>C:\Users\Jack\Documents\Code Libraries\facio\</StartWorkingDirectory>
+    <StartArguments>--unicode -o "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp.fsl"</StartArguments>
+    <StartWorkingDirectory>
+    </StartWorkingDirectory>
     <OtherFlags>--stackReserveSize:16777216 --warnon:1182</OtherFlags>
   </PropertyGroup>
   <PropertyGroup>
