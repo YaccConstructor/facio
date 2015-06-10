@@ -230,7 +230,7 @@ module Program =
                 ArgInfo.Create ("--module", ArgType.String (fun s -> generatedModuleName := Some s),
                     sprintf "The name to use for the F# module containing the generated parser. \
                         The default is '%s'." defaultParserModuleName);
-                ArgInfo.Create ("--internal", ArgType.Unit (fun () -> internalModule := true),
+                ArgInfo.Create ("--internal", ArgType.Unit (fun () -> internalModule := false),
                     "Generate an internal module");
                 ArgInfo.Create ("--open", ArgType.String openDeclarations.Add,
                     "Add the given module to the list of those to open in both the generated signature and implementation.");
