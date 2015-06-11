@@ -106,7 +106,7 @@ type FSharpYaccTask () =
             | _ -> None
 
         let compilationOptions : FSharpYacc.CompilationOptions = {
-            ParserType = FSharpYacc.ParserType.Lalr1;
+            ParserType = FSharpYacc.ParserType.LALR1;
             FsyaccBackendOptions = Some {
                 OutputPath = outputFile;
                 ModuleName =
