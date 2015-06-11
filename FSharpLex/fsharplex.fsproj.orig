@@ -28,9 +28,16 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>25</WarningsAsErrors>
+<<<<<<< HEAD
     <StartArguments>--unicode -o "TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "TestCases\fsharp\fsharp.fsl"</StartArguments>
     <OtherFlags>--stackReserveSize:16777216 --warnon:1182</OtherFlags>
     <StartWorkingDirectory>C:\Users\Ekaterina\YaccConstructor\facio\</StartWorkingDirectory>
+=======
+    <StartArguments>--unicode -o "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp.fsl"</StartArguments>
+    <OtherFlags>--stackReserveSize:16777216 --warnon:1182</OtherFlags>
+    <StartWorkingDirectory>
+    </StartWorkingDirectory>
+>>>>>>> 0a8e0104e1f3bba934993ce7b4c913e05e844d00
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,8 +50,14 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors>25</WarningsAsErrors>
+<<<<<<< HEAD
     <StartArguments>--unicode -o "TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "TestCases\fsharp\fsharp.fsl"</StartArguments>
     <StartWorkingDirectory>C:\Users\Jack\Documents\Code Libraries\facio\</StartWorkingDirectory>
+=======
+    <StartArguments>--unicode -o "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp-lexer.fs" --lexlib Internal.Utilities.Text.Lexing "C:\Users\Ekaterina\facio\TestCases\fsharp\fsharp.fsl"</StartArguments>
+    <StartWorkingDirectory>
+    </StartWorkingDirectory>
+>>>>>>> 0a8e0104e1f3bba934993ce7b4c913e05e844d00
     <OtherFlags>--stackReserveSize:16777216 --warnon:1182</OtherFlags>
   </PropertyGroup>
   <PropertyGroup>
@@ -127,7 +140,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(NuGetTargets)')" Text="$(ErrorText)" />
   </Target>
+<<<<<<< HEAD
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+=======
+>>>>>>> 0a8e0104e1f3bba934993ce7b4c913e05e844d00
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	     Other similar extension points exist, see Microsoft.Common.targets.
 	<Target Name="BeforeBuild">
