@@ -645,12 +645,12 @@ module private FsYacc =
                                 Set.add terminal terminals
 
                         Map.add action terminals terminalsByAction))
-
+            //warning FS1182: The value 'actionCountByState' is unused
             /// The total number of parser actions (excluding implicit error actions) for each parser state.
-            let actionCountByState =
+            (*let actionCountByState =
                 actionsByState
                 |> Map.map (fun _ actions ->
-                    List.length actions)
+                    List.length actions)*)
 
             /// The most-frequent parser action (if any) for each parser state.
             let mostFrequentAction =
@@ -705,8 +705,9 @@ module private FsYacc =
                     let mostFrequentActionTerminals =
                         Map.find mostFrequentAction terminalsByAction
 
+                    //warning FS1182: The value 'totalActionCount' is unused
                     /// The total number of parser actions for this state, excluding implicit error actions.
-                    let totalActionCount = Map.find stateId actionsByState
+                    //let totalActionCount = Map.find stateId actionsByState
 
                     /// The terminals for which the most-frequent action is NOT taken.
                     let otherActionTerminals =

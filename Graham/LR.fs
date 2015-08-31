@@ -131,10 +131,17 @@ type LrItem<'Nonterminal, 'Terminal, 'Lookahead
 
     //
     static member private Equals (item1 : LrItem<'Nonterminal, 'Terminal, 'Lookahead>, item2 : LrItem<'Nonterminal, 'Terminal, 'Lookahead>) =
-        item1 === item2 || (
+        //warning FS0044: This construct is deprecated. This operator will be removed in a future release. Use the (==) operator instead.
+        (*item1 === item2 || (
             (box item1.Nonterminal === box item2.Nonterminal || item1.Nonterminal = item2.Nonterminal) &&
             (item1.Production === item2.Production || item1.Production = item2.Production) &&
             (box item1.Lookahead === box item2.Lookahead || item1.Lookahead = item2.Lookahead) &&
+            item1.Position = item2.Position)*)
+
+        item1 == item2 || (
+            (box item1.Nonterminal == box item2.Nonterminal || item1.Nonterminal = item2.Nonterminal) &&
+            (item1.Production == item2.Production || item1.Production = item2.Production) &&
+            (box item1.Lookahead == box item2.Lookahead || item1.Lookahead = item2.Lookahead) &&
             item1.Position = item2.Position)
 
     interface System.IEquatable<LrItem<'Nonterminal, 'Terminal, 'Lookahead>> with
@@ -145,22 +152,30 @@ type LrItem<'Nonterminal, 'Terminal, 'Lookahead
         member this.CompareTo other =
             match other with
             | :? LrItem<'Nonterminal, 'Terminal, 'Lookahead> as other ->
+                //warning FS0044: This construct is deprecated. This operator will be removed in a future release. Use the (==) operator instead.
                 // Are the instances actually the same instance?
-                if this === other then 0
+                //if this === other then 0
+                if this == other then 0
                 else
+                    //warning FS0044: This construct is deprecated. This operator will be removed in a future release. Use the (==) operator instead.
                     // Are the nonterminals the same or equal?
                     match
-                        if box this.Nonterminal === box other.Nonterminal then 0
+                        //if box this.Nonterminal === box other.Nonterminal then 0
+                        if box this.Nonterminal == box other.Nonterminal then 0
                         else compare this.Nonterminal other.Nonterminal with
                     | 0 ->
+                        //warning FS0044: This construct is deprecated. This operator will be removed in a future release. Use the (==) operator instead.
                         // Are the productions the same or equal?
                         match
-                            if this.Production === other.Production then 0
+                            //if this.Production === other.Production then 0
+                            if this.Production == other.Production then 0
                             else LrItemHelper.compareArrays (this.Production, other.Production) with
                         | 0 ->
+                            //warning FS0044: This construct is deprecated. This operator will be removed in a future release. Use the (==) operator instead.
                             // Are the lookaheads the same or equal?
                             match
-                                if box this.Lookahead === box other.Production then 0
+                                //if box this.Lookahead === box other.Production then 0
+                                if box this.Lookahead == box other.Production then 0
                                 else compare this.Lookahead other.Lookahead with
                             | 0 ->
                                 // Compare the parser positions.
